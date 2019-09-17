@@ -22,8 +22,8 @@ public class Student69 extends PodPlugIn {
 
      float calcdist (float x1,float x2, float y1 ,float y2) {
 
-        float distx = x1 - x2;
-        float disty = y1 - y2;
+        float distx = x2 - x1;
+        float disty = y2 - y1;
         float dist = sqrt((distx * distx) + (disty * disty));
         return dist;
     }
@@ -43,15 +43,18 @@ public class Student69 extends PodPlugIn {
         int procheck = getNextCheckPointIndex();
         float xcheck = getCheckPointPositionX(procheck);
         float ycheck = getCheckPointPositionY(procheck);
-
         float xship = getShipPositionX();
         float yship = getShipPositionY();
 
+        float dist= calcdist(xcheck,xship,ycheck,yship);
 
+        //if (dist <=1){
+            //procheck= procheck+1;
+            //dist= calcdist(getCheckPointPositionX(procheck),getShipPositionX(),getCheckPointPositionY(procheck),getShipPositionY());
+        // }
 
-        double angleobj = (atan2(disty,distx))*180/3.14;
-        float angleact = getShipAngle();
-        float diffangle = (float)angleobj-angleact;
+        double angleobj = (atan2(getCheckPointPositionY(procheck)-yship,getCheckPointPositionX(procheck)-xship))*180/3.14;
+        float diffangle = (float)angleobj-getShipAngle();
 
         turn(diffangle);
 
