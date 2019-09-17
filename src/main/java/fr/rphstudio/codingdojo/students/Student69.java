@@ -48,17 +48,17 @@ public class Student69 extends PodPlugIn {
 
         float dist= calcdist(xcheck,xship,ycheck,yship);
 
-        //if (dist <=1){
-            //procheck= procheck+1;
-            //dist= calcdist(getCheckPointPositionX(procheck),getShipPositionX(),getCheckPointPositionY(procheck),getShipPositionY());
-        // }
+        if (dist <=2){
+            procheck= procheck+1;
+            dist= calcdist(getCheckPointPositionX(procheck),getShipPositionX(),getCheckPointPositionY(procheck),getShipPositionY());
+         }
 
         double angleobj = (atan2(getCheckPointPositionY(procheck)-yship,getCheckPointPositionX(procheck)-xship))*180/3.14;
         float diffangle = (float)angleobj-getShipAngle();
 
         turn(diffangle);
 
-        System.out.println(diffangle);
+        System.out.println(dist);
 
         //turnTowardPosition(xcheck, ycheck);
 
@@ -73,17 +73,18 @@ public class Student69 extends PodPlugIn {
 
             if (dist <= 1.5) {
                 incSpeed(-0.15f);
-                System.out.println("freine");
             }
-            else if (dist >= 7) {
-
-                    incSpeed(0.8f);
-                    System.out.println("acc");
+             if (dist >=8) {
+                 if ((getShipBoostLevel()==100)&(diffangle<=10)){
+                     useBoost();
+                 }
+                 else {
+                     incSpeed(0.8f);
+                 }
                 }
 
             else{
-                    incSpeed(0.5f);
-                    System.out.println("normal");
+                    incSpeed(0.7f);
                 }}
 
 
