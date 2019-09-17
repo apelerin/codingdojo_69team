@@ -31,7 +31,7 @@ public class Student69 extends PodPlugIn {
         //-------------------------------------------------------
         // WRITE YOUR OWN CODE HERE
         
-        setPlayerName("Student 1");
+        setPlayerName("69Student");
         selectShip(1);
         setPlayerColor(255,255,255,255);
 
