@@ -13,14 +13,14 @@ import fr.rphstudio.codingdojo.game.PodPlugIn;
  * @author Romuald GRIGNON
  */
 public class Student69 extends PodPlugIn {
-    public Student69(Pod p){
+    public Student69(Pod p) {
         super(p);
     }
-    
+
     //-------------------------------------------------------
     // DECLARE YOUR OWN VARIABLES AND FUNCTIONS HERE
 
-    float calcdist (int numcheck) {
+    float calcdist(int numcheck) {
 
         float xcheck = getCheckPointPositionX(numcheck);
         float ycheck = getCheckPointPositionY(numcheck);
@@ -33,12 +33,14 @@ public class Student69 extends PodPlugIn {
         return dist;
     }
 
-     float calcdistold (float x1,float x2, float y1 ,float y2) {
-
-        float distx = x2 - x1;
-        float disty = y2 - y1;
-        float dist = sqrt((distx * distx) + (disty * disty));
-        return dist;
+    float calcangle(int numcheck) {
+        float xcheck = getCheckPointPositionX(numcheck);
+        float ycheck = getCheckPointPositionY(numcheck);
+        float xship = getShipPositionX();
+        float yship = getShipPositionY();
+        double angleobj = (atan2(ycheck-yship,xcheck-xship))*180/3.14;
+        float diffangle = (float) angleobj - getShipAngle();
+        return diffangle;
     }
     
     // END OF VARIABLES/FUNCTIONS AREA
@@ -51,7 +53,7 @@ public class Student69 extends PodPlugIn {
 
         setPlayerName("69Student");
         selectShip(32);
-        setPlayerColor(140, 0, 128, 255);
+        setPlayerColor(140, 0, 128, 175);
 
         int procheck = getNextCheckPointIndex();
         float xcheck = getCheckPointPositionX(procheck);
@@ -64,21 +66,13 @@ public class Student69 extends PodPlugIn {
         if (dist <=2.2){
             procheck= procheck+1;
             calcdist(procheck);
-            //dist= calcdistold(getCheckPointPositionX(procheck),getShipPositionX(),getCheckPointPositionY(procheck),getShipPositionY());
          }
 
-        double angleobj = (atan2(getCheckPointPositionY(procheck)-yship,getCheckPointPositionX(procheck)-xship))*180/3.14;
-        float diffangle = (float)angleobj-getShipAngle();
+        //double angleobj = (atan2(getCheckPointPositionY(procheck)-yship,getCheckPointPositionX(procheck)-xship))*180/3.14;
+        //float diffangle = (float)angleobj-getShipAngle();
 
+        float diffangle = calcangle(procheck);
         turn(diffangle);
-
-        System.out.println(dist);
-
-        //turnTowardPosition(xcheck, ycheck);
-
-        //float etatboost = getShipBoostLevel();
-
-        //System.out.println(getShipSpeed());
 
         if (getShipSpeed()<=1f) {
             incSpeed(0.45f);
@@ -98,14 +92,6 @@ public class Student69 extends PodPlugIn {
             else{
                     incSpeed(0.75f);
                 }}
-
-
-            //moveToNextCheckPoint(0.5f);
-
-            //if (getShipBoostLevel() == 100) {
-                //useBoost(); }
-                    //else {
-
 
             // END OF CODE AREA
             //-------------------------------------------------------
