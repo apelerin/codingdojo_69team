@@ -1,6 +1,6 @@
 #!/bin/bash
 
-FTP_SERVER='sftp://2043370:codingDoj0@sftp.sd6.gpaas.net/private/codingdojo/'
+FTP_SERVER='ftp://dojouser:codingDoj0@51.91.98.27/spaceships/'
 BASE=$(dirname $0)
 DOWNLOAD_DIR=$BASE/students
 
