@@ -56,6 +56,7 @@ public class Student69 extends PodPlugIn {
         setPlayerColor(140, 0, 128, 175);
 
         int procheck = getNextCheckPointIndex();
+        int ciblecheck = procheck;
         float xcheck = getCheckPointPositionX(procheck);
         float ycheck = getCheckPointPositionY(procheck);
         float xship = getShipPositionX();
@@ -64,23 +65,19 @@ public class Student69 extends PodPlugIn {
         float dist= calcdist(procheck);
 
         if (dist <=2.2){
-            procheck= procheck+1;
-            calcdist(procheck);
+            ciblecheck= procheck+1;
+            calcdist(ciblecheck);
          }
 
-        //double angleobj = (atan2(getCheckPointPositionY(procheck)-yship,getCheckPointPositionX(procheck)-xship))*180/3.14;
-        //float diffangle = (float)angleobj-getShipAngle();
-
-        float diffangle = calcangle(procheck);
+        float diffangle = calcangle(ciblecheck);
         turn(diffangle);
 
         if (getShipSpeed()<=1f) {
             incSpeed(0.45f);
         }
         else{
-
-            if (dist <= 2.5) {
-                incSpeed(-1f*getShipSpeed());
+            if (dist <= 3) {
+                incSpeed(-0.9f*getShipSpeed());
             }
              else if (dist >=8 & (getShipBoostLevel()==100) & (diffangle==0)) {
                      useBoost();
@@ -88,13 +85,11 @@ public class Student69 extends PodPlugIn {
              else if (dist >=6.5) {
                 incSpeed(1);
             }
-
-            else{
-                    incSpeed(0.75f);
+             else{
+                    incSpeed(1f);
                 }}
 
             // END OF CODE AREA
             //-------------------------------------------------------
         }
-
     }
