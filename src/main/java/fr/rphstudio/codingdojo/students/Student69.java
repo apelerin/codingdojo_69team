@@ -20,7 +20,20 @@ public class Student69 extends PodPlugIn {
     //-------------------------------------------------------
     // DECLARE YOUR OWN VARIABLES AND FUNCTIONS HERE
 
-     float calcdist (float x1,float x2, float y1 ,float y2) {
+    float calcdist (int numcheck) {
+
+        float xcheck = getCheckPointPositionX(numcheck);
+        float ycheck = getCheckPointPositionY(numcheck);
+        float xship = getShipPositionX();
+        float yship = getShipPositionY();
+
+        float distx = xcheck - xship;
+        float disty = ycheck - yship;
+        float dist = sqrt((distx * distx) + (disty * disty));
+        return dist;
+    }
+
+     float calcdistold (float x1,float x2, float y1 ,float y2) {
 
         float distx = x2 - x1;
         float disty = y2 - y1;
@@ -46,11 +59,12 @@ public class Student69 extends PodPlugIn {
         float xship = getShipPositionX();
         float yship = getShipPositionY();
 
-        float dist= calcdist(xcheck,xship,ycheck,yship);
+        float dist= calcdist(procheck);
 
-        if (dist <=2){
+        if (dist <=2.2){
             procheck= procheck+1;
-            dist= calcdist(getCheckPointPositionX(procheck),getShipPositionX(),getCheckPointPositionY(procheck),getShipPositionY());
+            calcdist(procheck);
+            //dist= calcdistold(getCheckPointPositionX(procheck),getShipPositionX(),getCheckPointPositionY(procheck),getShipPositionY());
          }
 
         double angleobj = (atan2(getCheckPointPositionY(procheck)-yship,getCheckPointPositionX(procheck)-xship))*180/3.14;
@@ -67,24 +81,22 @@ public class Student69 extends PodPlugIn {
         //System.out.println(getShipSpeed());
 
         if (getShipSpeed()<=1f) {
-            incSpeed(0.4f);
+            incSpeed(0.45f);
         }
         else{
 
-            if (dist <= 1.5) {
-                incSpeed(-0.15f);
+            if (dist <= 2.5) {
+                incSpeed(-1f*getShipSpeed());
             }
-             if (dist >=8) {
-                 if ((getShipBoostLevel()==100)&(diffangle<=10)){
+             else if (dist >=8 & (getShipBoostLevel()==100) & (diffangle==0)) {
                      useBoost();
                  }
-                 else {
-                     incSpeed(0.8f);
-                 }
-                }
+             else if (dist >=6.5) {
+                incSpeed(1);
+            }
 
             else{
-                    incSpeed(0.7f);
+                    incSpeed(0.75f);
                 }}
 
 
