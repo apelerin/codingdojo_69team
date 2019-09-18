@@ -71,21 +71,27 @@ public class Student69 extends PodPlugIn {
         }
 
         float diffangle = calcangle(ciblecheck);
-        turn(diffangle);
 
-        if ((getShipSpeed() <= 2f) & (diffangle ==0 )) {
-            incSpeed(0.85f);
+        if (getShipSpeed() < 2f){
+            turn(calcangle(procheck));}
+        else {
+            turn (calcangle(ciblecheck));
+        }
+
+
+        if (dist <= 2.5) {
+            if (getShipSpeed() < 2f){
+                incSpeed(0.2f * getShipSpeed());}
+            else {
+                    incSpeed(-0.7f * getShipSpeed());
+
+            }}
+        else if (dist >=8 & (getShipBoostLevel() == 100) & (diffangle == 0)) {
+            useBoost();
         }
         else{
-            if (dist <= 3.5) {
-                incSpeed(-0.85f * getShipSpeed());
-            }
-             else if (dist >=8 & (getShipBoostLevel() == 100) & (diffangle == 0)) {
-                     useBoost();
-                 }
-             else{
-                    incSpeed(1f);
-                }}
+            incSpeed(1f);
+        }
 
             // END OF CODE AREA
             //-------------------------------------------------------
