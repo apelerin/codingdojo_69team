@@ -83,23 +83,19 @@ public class Student69 extends PodPlugIn {
 
         setPlayerName("69Student");
         selectShip(32);
-
-        arcenciel(comptcolo);
-
+        //arcenciel(comptcolo);
         //setPlayerColor(140, 0, 128, 255);
+        setPlayerColor(160, 0, (int)(getShipBatteryLevel()*2.55), 255);
 
         int procheck = getNextCheckPointIndex();
         int ciblecheck = procheck;
-
         float dist = calcdist(procheck);
 
         if (dist <=2){
-            if (procheck == getNbRaceCheckPoints()) {
+            if (procheck == (getNbRaceCheckPoints()-1)) {
                 ciblecheck = 0; }
-
             else {
                 ciblecheck = procheck+1;}
-
             calcdist(ciblecheck);
         }
 
@@ -111,13 +107,11 @@ public class Student69 extends PodPlugIn {
             turn (calcangle(ciblecheck));
         }
 
-
         if (dist <= 3) {
             if (getShipSpeed() < 1.5f){
                 incSpeed(0.4f * getShipSpeed());}
             else {
-                    incSpeed(-0.8f * getShipSpeed());
-
+                    incSpeed(-1f * getShipSpeed());
             }}
         else if (dist >=8 & (getShipBoostLevel() == 100) & (diffangle == 0)) {
             useBoost();
