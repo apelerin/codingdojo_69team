@@ -42,6 +42,8 @@ public class Student69 extends PodPlugIn {
         float diffangle = (float) angleobj - getShipAngle();
         return diffangle;
     }
+
+    int comptcolo = 0;
     
     // END OF VARIABLES/FUNCTIONS AREA
     //-------------------------------------------------------
@@ -53,7 +55,9 @@ public class Student69 extends PodPlugIn {
 
         setPlayerName("69Student");
         selectShip(32);
-        setPlayerColor(140, 0, 128, 175);
+
+
+        setPlayerColor(140, 0, 128, 255);
 
         int procheck = getNextCheckPointIndex();
         int ciblecheck = procheck;
@@ -79,11 +83,11 @@ public class Student69 extends PodPlugIn {
         }
 
 
-        if (dist <= 2.5) {
-            if (getShipSpeed() < 2f){
-                incSpeed(0.2f * getShipSpeed());}
+        if (dist <= 3) {
+            if (getShipSpeed() < 1.5f){
+                incSpeed(0.4f * getShipSpeed());}
             else {
-                    incSpeed(-0.7f * getShipSpeed());
+                    incSpeed(-0.8f * getShipSpeed());
 
             }}
         else if (dist >=8 & (getShipBoostLevel() == 100) & (diffangle == 0)) {
