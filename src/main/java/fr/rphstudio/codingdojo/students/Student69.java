@@ -44,7 +44,7 @@ public class Student69 extends PodPlugIn {
     public void process(int delta) {
         //-------------------------------------------------------
         // WRITE YOUR OWN CODE HERE
-        setPlayerName("BANANA 69");
+        setPlayerName("69-Banana");
         selectShip(32);
         setPlayerColor(255, 0, 255, 130);
 
@@ -62,7 +62,7 @@ public class Student69 extends PodPlugIn {
         float xCheck = getCheckPointPositionX(proCheck);
         float yCheck = getCheckPointPositionY(proCheck);
 
-        int nextProCheckpoint=(proCheck+1) % nbCheck;
+        int nextProCheckpoint = (proCheck+1) % nbCheck;
 
         float xPrecheck = getCheckPointPositionX(nextCheckpoint);
         float yPrecheck = getCheckPointPositionY(nextCheckpoint);
@@ -82,22 +82,37 @@ public class Student69 extends PodPlugIn {
 
         float dist2 = dist * 0.05f * getShipSpeed();
 
-        System.out.println (dist2);
-
         //Anticipation de la balise encore après
 
         double angleobjpro = (atan2(yProCheck-yShip,xProCheck-xShip))*180/PI;
         float diffproangle = (float)angleobjpro-getShipAngle();
 
-        //Accéleration
+        //Compensation
 
-        if (dist<=2.5 && getShipSpeed()>= 1f){
-            incSpeed(-0.8f);
+        float xspeed = getShipSpeedX();
+        float yspeed = getShipSpeedY();
+        float directionSpeed = atan2(yspeed,xspeed)*180/PI;
+        float diff = (float)((angleobj-directionSpeed)+360)%360;
+
+        //Accéleration et rotation
+
+        if (dist<=3 && getShipSpeed()>=2f){
+            incSpeed(-1.0f);
             rotation = diffproangle;
-        } else {
-            incSpeed(1.0f);
-            rotation = diffangle;
         }
+        else {
+            incSpeed(1.0f);
+            rotation=diffangle;
+
+            if (diff>180 && angleobj+2.5<diff && angleobj-2.5>diff){
+                rotation=-diff;
+            }
+            else if (diff<180 && angleobj+2.5<diff && angleobj-2.5>diff){
+                rotation=diff;
+            }
+        }
+
+        //Tourner
 
         turn(rotation);
 
@@ -106,6 +121,3 @@ public class Student69 extends PodPlugIn {
     }
 
 }
-
-
-
