@@ -91,8 +91,8 @@ public class Student69 extends PodPlugIn {
 
         //Accéleration
 
-        if (dist<=3 && getShipSpeed()>= 1f){
-            incSpeed(-0.8f);
+        if (dist<=2.5 && getShipSpeed()>= 1.5f){  //dist<=3
+            incSpeed(-0.8f);                //incSpeed(-0.8f);
             rotation=diffproangle;
         }
         else{
