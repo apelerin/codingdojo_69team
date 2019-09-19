@@ -13,102 +13,100 @@ import fr.rphstudio.codingdojo.game.PodPlugIn;
  * @author Romuald GRIGNON
  */
 public class Student69 extends PodPlugIn {
-    public Student69(Pod p){
+    public Student69(Pod p) {
         super(p);
     }
-    
+
     //-------------------------------------------------------
     // DECLARE YOUR OWN VARIABLES AND FUNCTIONS HERE
 
-    float calcdist (int numcheck) {
-
-        float xcheck = getCheckPointPositionX(numcheck);
-        float ycheck = getCheckPointPositionY(numcheck);
-        float xship = getShipPositionX();
-        float yship = getShipPositionY();
-
-        float distx = xcheck - xship;
-        float disty = ycheck - yship;
-        float dist = sqrt((distx * distx) + (disty * disty));
-        return dist;
-    }
-
-     float calcdistold (float x1,float x2, float y1 ,float y2) {
+    float calcdist (float x1,float x2, float y1 ,float y2) {
 
         float distx = x2 - x1;
         float disty = y2 - y1;
         float dist = sqrt((distx * distx) + (disty * disty));
         return dist;
     }
-    
+    float calcdiffdist (float x1,float x2, float y1 ,float y2) {
+
+        float diffdistx = x2 - x1;
+        float diffdisty = y2 - y1;
+        float diffdist = sqrt((diffdistx * diffdistx) + (diffdisty * diffdisty));
+        return diffdist;
+    }
+
+    int nextCheckpoint;
+
     // END OF VARIABLES/FUNCTIONS AREA
     //-------------------------------------------------------
-    
+
     @Override
     public void process(int delta) {
         //-------------------------------------------------------
         // WRITE YOUR OWN CODE HERE
-
-        setPlayerName("69Student");
+        setPlayerName("BANANA 69");
         selectShip(32);
-        setPlayerColor(140, 0, 128, 255);
+        setPlayerColor(255, 0, 255, 130);
 
+        float rotation;
+
+        //Variables de checkpoints
+
+        int nbcheck = getNbRaceCheckPoints();
         int procheck = getNextCheckPointIndex();
-        float xcheck = getCheckPointPositionX(procheck);
-        float ycheck = getCheckPointPositionY(procheck);
+
+        //Variables de positions
+
         float xship = getShipPositionX();
         float yship = getShipPositionY();
+        float xcheck = getCheckPointPositionX(procheck);
+        float ycheck = getCheckPointPositionY(procheck);
 
-        float dist= calcdist(procheck);
+        int nextproCheckpoint=(procheck+1)%nbcheck;
 
-        if (dist <=2.2){
-            procheck= procheck+1;
-            calcdist(procheck);
-            //dist= calcdistold(getCheckPointPositionX(procheck),getShipPositionX(),getCheckPointPositionY(procheck),getShipPositionY());
-         }
+        float xprecheck = getCheckPointPositionX(nextCheckpoint);
+        float yprecheck = getCheckPointPositionY(nextCheckpoint);
+        float xprocheck = getCheckPointPositionX(nextproCheckpoint);
+        float yprocheck = getCheckPointPositionY(nextproCheckpoint);
 
-        double angleobj = (atan2(getCheckPointPositionY(procheck)-yship,getCheckPointPositionX(procheck)-xship))*180/3.14;
+        //Distances
+
+        float dist = calcdist(xcheck,xship,ycheck,yship);
+
+        float diffdist = calcdiffdist(xcheck,xprecheck,ycheck,yprecheck);
+
+        //Orientation prochaine balise
+
+        double angleobj = (atan2(ycheck-yship,xcheck-xship))*180/PI;
         float diffangle = (float)angleobj-getShipAngle();
 
-        turn(diffangle);
+        rotation=diffangle;
 
-        System.out.println(dist);
+        float dist2 = dist*0.5f*getShipSpeed();
 
-        //turnTowardPosition(xcheck, ycheck);
+        //Anticipation de la balise encore après
 
-        //float etatboost = getShipBoostLevel();
+        double angleobjpro = (atan2(yprocheck-yship,xprocheck-xship))*180/PI;
+        float diffproangle = (float)angleobjpro-getShipAngle();
 
-        //System.out.println(getShipSpeed());
+        //Accéleration
 
-        if (getShipSpeed()<=1f) {
-            incSpeed(0.45f);
+        if (dist<=3 && getShipSpeed()>= 1f){
+            incSpeed(-0.8f);
+            rotation=diffproangle;
         }
         else{
-
-            if (dist <= 2.5) {
-                incSpeed(-1f*getShipSpeed());
-            }
-             else if (dist >=8 & (getShipBoostLevel()==100) & (diffangle==0)) {
-                     useBoost();
-                 }
-             else if (dist >=6.5) {
-                incSpeed(1);
-            }
-
-            else{
-                    incSpeed(0.75f);
-                }}
-
-
-            //moveToNextCheckPoint(0.5f);
-
-            //if (getShipBoostLevel() == 100) {
-                //useBoost(); }
-                    //else {
-
-
-            // END OF CODE AREA
-            //-------------------------------------------------------
+            incSpeed(1.0f);
+            rotation=diffangle;
         }
 
+        turn(rotation);
+
+        // END OF CODE AREA
+        //-------------------------------------------------------
     }
+
+}
+
+
+
