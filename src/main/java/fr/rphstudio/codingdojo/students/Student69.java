@@ -35,6 +35,14 @@ public class Student69 extends PodPlugIn {
         return diffdist;
     }
 
+    boolean isSufficientlyCharged() {
+        if (getShipBatteryLevel() > 5f) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     int nextCheckpoint;
 
     // END OF VARIABLES/FUNCTIONS AREA
@@ -49,56 +57,56 @@ public class Student69 extends PodPlugIn {
         setPlayerColor(255, 0, 255, 130);
 
         float rotation;
+        if (!isSufficientlyCharged()) {
 
-        //Variables de checkpoints
+        } else  {
+            //Variables de checkpoints
 
-        int nbCheck = getNbRaceCheckPoints();
-        int proCheck = getNextCheckPointIndex();
+            int nbCheck = getNbRaceCheckPoints();
+            int proCheck = getNextCheckPointIndex();
 
-        //Variables de positions
+            //Variables de positions
 
-        float xShip = getShipPositionX();
-        float yShip = getShipPositionY();
-        float xCheck = getCheckPointPositionX(proCheck);
-        float yCheck = getCheckPointPositionY(proCheck);
+            float xShip = getShipPositionX();
+            float yShip = getShipPositionY();
+            float xCheck = getCheckPointPositionX(proCheck);
+            float yCheck = getCheckPointPositionY(proCheck);
 
-        int nextProCheckpoint=(proCheck+1) % nbCheck;
+            int nextProCheckpoint = (proCheck + 1) % nbCheck;
 
-        float xPrecheck = getCheckPointPositionX(nextCheckpoint);
-        float yPrecheck = getCheckPointPositionY(nextCheckpoint);
-        float xProCheck = getCheckPointPositionX(nextProCheckpoint);
-        float yProCheck = getCheckPointPositionY(nextProCheckpoint);
+            float xPrecheck = getCheckPointPositionX(nextCheckpoint);
+            float yPrecheck = getCheckPointPositionY(nextCheckpoint);
+            float xProCheck = getCheckPointPositionX(nextProCheckpoint);
+            float yProCheck = getCheckPointPositionY(nextProCheckpoint);
 
-        //Distances
+            //Distances
 
-        float dist = calcdist(xCheck, xShip, yCheck, yShip);
+            float dist = calcdist(xCheck, xShip, yCheck, yShip);
 
-        float diffdist = calcdiffdist(xCheck, xPrecheck, yCheck, yPrecheck);
+            float diffdist = calcdiffdist(xCheck, xPrecheck, yCheck, yPrecheck);
 
-        //Orientation prochaine balise
+            //Orientation prochaine balise
 
-        double angleobj = (atan2(yCheck-yShip,xCheck-xShip))*180/PI;
-        float diffangle = (float)angleobj-getShipAngle();
+            double angleobj = (atan2(yCheck - yShip, xCheck - xShip)) * 180 / PI;
+            float diffangle = (float) angleobj - getShipAngle();
 
-        rotation = diffangle;
+            float dist2 = dist * 0.5f * getShipSpeed();
 
-        float dist2 = dist * 0.5f * getShipSpeed();
+            //Anticipation de la balise encore après
 
-        //Anticipation de la balise encore après
+            double angleobjpro = (atan2(yProCheck - yShip, xProCheck - xShip)) * 180 / PI;
+            float diffproangle = (float) angleobjpro - getShipAngle();
 
-        double angleobjpro = (atan2(yProCheck-yShip,xProCheck-xShip))*180/PI;
-        float diffproangle = (float)angleobjpro-getShipAngle();
+            //Accéleration
 
-        //Accéleration
-
-        if (dist<=3 && getShipSpeed()>= 1f){
-            incSpeed(-0.8f);
-            rotation = diffproangle;
-        } else {
-            incSpeed(1.0f);
-            rotation = diffangle;
+            if (dist <= 3 && getShipSpeed() >= 1f) {
+                incSpeed(-0.8f);
+                rotation = diffproangle;
+            } else {
+                incSpeed(1.0f);
+                rotation = diffangle;
+            }
         }
-
         turn(rotation);
 
         // END OF CODE AREA
