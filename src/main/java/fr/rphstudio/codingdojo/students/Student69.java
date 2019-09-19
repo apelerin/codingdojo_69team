@@ -80,9 +80,9 @@ public class Student69 extends PodPlugIn {
         double angleobj = (atan2(yCheck-yShip,xCheck-xShip))*180/PI;
         float diffangle = (float)angleobj-getShipAngle();
 
-        rotation = diffangle;
+        float dist2 = dist * 0.05f * getShipSpeed();
 
-        float dist2 = dist * 0.5f * getShipSpeed();
+        System.out.println (dist2);
 
         //Anticipation de la balise encore après
 
@@ -91,7 +91,7 @@ public class Student69 extends PodPlugIn {
 
         //Accéleration
 
-        if (dist<=3 && getShipSpeed()>= 1f){
+        if (dist<=2.5 && getShipSpeed()>= 1f){
             incSpeed(-0.8f);
             rotation = diffproangle;
         } else {
