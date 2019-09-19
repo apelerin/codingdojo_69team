@@ -62,7 +62,7 @@ public class Student69 extends PodPlugIn {
         float xCheck = getCheckPointPositionX(proCheck);
         float yCheck = getCheckPointPositionY(proCheck);
 
-        int nextProCheckpoint=(proCheck+1) % nbcheck;
+        int nextProCheckpoint=(proCheck+1) % nbCheck;
 
         float xPrecheck = getCheckPointPositionX(nextCheckpoint);
         float yPrecheck = getCheckPointPositionY(nextCheckpoint);
