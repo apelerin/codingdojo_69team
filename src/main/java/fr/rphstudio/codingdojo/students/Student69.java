@@ -44,6 +44,34 @@ public class Student69 extends PodPlugIn {
     }
 
     int comptcolo = 0;
+
+    int arcenciel ( int compt) {
+        if (comptcolo >1200){
+            comptcolo=0;
+        }
+        else {
+            comptcolo = comptcolo+1;}
+
+        if (comptcolo<=200) {
+            setPlayerColor(140, 0, 128, 255);
+        }
+        else if (comptcolo<=400) {
+            setPlayerColor(0, 0, 135, 255);
+        }
+        else if (comptcolo<=600) {
+            setPlayerColor(0, 172, 39, 255);
+        }
+        else if (comptcolo<=800) {
+            setPlayerColor(255, 217, 0, 255);
+        }
+        else if (comptcolo<=1000) {
+            setPlayerColor(255, 38, 0, 255);
+        }
+        else if (comptcolo<=12000) {
+            setPlayerColor(255, 0, 150, 255);
+        }
+        return compt;
+    }
     
     // END OF VARIABLES/FUNCTIONS AREA
     //-------------------------------------------------------
@@ -56,8 +84,9 @@ public class Student69 extends PodPlugIn {
         setPlayerName("69Student");
         selectShip(32);
 
+        arcenciel(comptcolo);
 
-        setPlayerColor(140, 0, 128, 255);
+        //setPlayerColor(140, 0, 128, 255);
 
         int procheck = getNextCheckPointIndex();
         int ciblecheck = procheck;
