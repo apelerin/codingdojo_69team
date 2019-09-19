@@ -109,9 +109,9 @@ public class Student69 extends PodPlugIn {
 
         if (dist <= 3) {
             if (getShipSpeed() < 1.5f){
-                incSpeed(0.4f * getShipSpeed());}
+                incSpeed(0.7f * getShipSpeed());}
             else {
-                    incSpeed(-1f * getShipSpeed());
+                    incSpeed(-0.9f * getShipSpeed());
             }}
         else if (dist >=8 & (getShipBoostLevel() == 100) & (diffangle == 0)) {
             useBoost();
