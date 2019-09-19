@@ -35,6 +35,14 @@ public class Student69 extends PodPlugIn {
         return diffdist;
     }
 
+    boolean isSufficientlyCharged() {
+        if (getShipBatteryLevel() > 5f) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     int nextCheckpoint;
 
     // END OF VARIABLES/FUNCTIONS AREA
@@ -49,91 +57,89 @@ public class Student69 extends PodPlugIn {
         setPlayerColor(255, 0, 255, 130);
 
         float rotation;
+        if (!isSufficientlyCharged()) {
 
-        //Variables de checkpoints
+        } else  {
+            //Variables de checkpoints
 
-        int nbCheck = getNbRaceCheckPoints();
-        int proCheck = getNextCheckPointIndex();
+            int nbCheck = getNbRaceCheckPoints();
+            int proCheck = getNextCheckPointIndex();
 
-        //Variables de positions
+            //Variables de positions
 
-        float xShip = getShipPositionX();
-        float yShip = getShipPositionY();
-        float xCheck = getCheckPointPositionX(proCheck);
-        float yCheck = getCheckPointPositionY(proCheck);
+            float xShip = getShipPositionX();
+            float yShip = getShipPositionY();
+            float xCheck = getCheckPointPositionX(proCheck);
+            float yCheck = getCheckPointPositionY(proCheck);
 
-        int nextProCheckpoint = (proCheck+1) % nbCheck;
+            int nextProCheckpoint = (proCheck + 1) % nbCheck;
 
-        float xPrecheck = getCheckPointPositionX(nextCheckpoint);
-        float yPrecheck = getCheckPointPositionY(nextCheckpoint);
-        float xProCheck = getCheckPointPositionX(nextProCheckpoint);
-        float yProCheck = getCheckPointPositionY(nextProCheckpoint);
+            float xPrecheck = getCheckPointPositionX(nextCheckpoint);
+            float yPrecheck = getCheckPointPositionY(nextCheckpoint);
+            float xProCheck = getCheckPointPositionX(nextProCheckpoint);
+            float yProCheck = getCheckPointPositionY(nextProCheckpoint);
 
-        //Distances
+            //Distances
 
-        float dist = calcdist(xCheck, xShip, yCheck, yShip);
+            float dist = calcdist(xCheck, xShip, yCheck, yShip);
 
-        float diffdist = calcdiffdist(xCheck, xPrecheck, yCheck, yPrecheck);
+            float diffdist = calcdiffdist(xCheck, xPrecheck, yCheck, yPrecheck);
 
-        //Orientation prochaine balise
+            //Orientation prochaine balise
 
-        double angleobj = (atan2(yCheck-yShip,xCheck-xShip))*180/PI;
-        float diffangle = (float)angleobj-getShipAngle();
-        diffangle=(diffangle+360)%360;
+            double angleobj = (atan2(yCheck - yShip, xCheck - xShip)) * 180 / PI;
+            float diffangle = (float) angleobj - getShipAngle();
+            diffangle=(diffangle+360)%360;
+            float dist2 = dist * 0.5f * getShipSpeed();
 
-        float dist2 = dist * 0.05f * getShipSpeed();
+            //Anticipation de la balise encore après
 
-        //Anticipation de la balise encore après
+            double angleobjpro = (atan2(yProCheck - yShip, xProCheck - xShip)) * 180 / PI;
+            float diffproangle = (float) angleobjpro - getShipAngle();
+            
+            diffproangle=(diffproangle+360)%360;
+            if (diffproangle<180){
+                diffproangle=5;
+            } else {
+                diffproangle=-5;
+            }
 
-        double angleobjpro = (atan2(yProCheck-yShip,xProCheck-xShip))*180/PI;
-        float diffproangle = (float)angleobjpro-getShipAngle();
-        diffproangle=(diffproangle+360)%360;
-        if (diffproangle<180){
-            diffproangle=5;
-        }
-        else{
-            diffproangle=-5;
-        }
+            //Compensation
 
-        //Compensation
-
-        float xspeed = getShipSpeedX();
-        float yspeed = getShipSpeedY();
-        float directionSpeed = atan2(yspeed,xspeed)*180/PI;
-        float diff = (float)((angleobj-directionSpeed)+360)%360;
-        float diffcompensation;
-        float ecart= abs(diff-180)*getShipSpeed()/100;
+            float xspeed = getShipSpeedX();
+            float yspeed = getShipSpeedY();
+            float directionSpeed = atan2(yspeed,xspeed)*180/PI;
+            float diff = (float)((angleobj-directionSpeed)+360)%360;
+            float diffcompensation;
+            float ecart= abs(diff-180)*getShipSpeed()/100;
 
 
-        if(diff<180){
-            setPlayerColor(255,255,0,255);
-            diffcompensation=ecart;
-        }
-        else {
-            setPlayerColor(255,0,0,255);
-            diffcompensation=-ecart;
-        }
+            if(diff<180){
+                setPlayerColor(255,255,0,255);
+                diffcompensation=ecart;
+            } else {
+                setPlayerColor(255,0,0,255);
+                diffcompensation=-ecart;
+            }
 
-        // mise a jour du nouvelle objectif
+            // mise a jour du nouvelle objectif
 
-        diffangle=(diffangle+diffcompensation+360)%360;
+            diffangle=(diffangle+diffcompensation+360)%360;
 
-        if (diffangle<180){
-            diffangle=5;
-        }
-        else {
-            diffangle=-5;
-        }
+            if (diffangle<180){
+                diffangle=5;
+            } else {
+                diffangle=-5;
+            }
 
-        //Accéleration et rotation
+            //Accéleration et rotation
 
-        if (dist<=2 && getShipSpeed()>=3f){
-            incSpeed(-1.0f);
-            rotation = diffproangle;
-        }
-        else {
-            incSpeed(1.0f);
-            rotation=diffangle;
+            if (dist<=2 && getShipSpeed()>=3f){
+                incSpeed(-1.0f);
+                rotation = diffproangle;
+            } else {
+                incSpeed(1.0f);
+                rotation=diffangle;
 
             /*
             if (diff>180 && angleobj+10<diff || diff>180 && angleobj-10>diff){
@@ -143,11 +149,11 @@ public class Student69 extends PodPlugIn {
                 rotation=diff;
             }
              */
-        }
+            }
 
         //Tourner
 
-        turn(rotation);
+            turn(rotation);
 
         // END OF CODE AREA
         //-------------------------------------------------------
