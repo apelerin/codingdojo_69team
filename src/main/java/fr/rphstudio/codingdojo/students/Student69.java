@@ -52,52 +52,51 @@ public class Student69 extends PodPlugIn {
 
         //Variables de checkpoints
 
-        int nbcheck = getNbRaceCheckPoints();
-        int procheck = getNextCheckPointIndex();
+        int nbCheck = getNbRaceCheckPoints();
+        int proCheck = getNextCheckPointIndex();
 
         //Variables de positions
 
-        float xship = getShipPositionX();
-        float yship = getShipPositionY();
-        float xcheck = getCheckPointPositionX(procheck);
-        float ycheck = getCheckPointPositionY(procheck);
+        float xShip = getShipPositionX();
+        float yShip = getShipPositionY();
+        float xCheck = getCheckPointPositionX(proCheck);
+        float yCheck = getCheckPointPositionY(proCheck);
 
-        int nextproCheckpoint=(procheck+1)%nbcheck;
+        int nextProCheckpoint=(proCheck+1) % nbcheck;
 
-        float xprecheck = getCheckPointPositionX(nextCheckpoint);
-        float yprecheck = getCheckPointPositionY(nextCheckpoint);
-        float xprocheck = getCheckPointPositionX(nextproCheckpoint);
-        float yprocheck = getCheckPointPositionY(nextproCheckpoint);
+        float xPrecheck = getCheckPointPositionX(nextCheckpoint);
+        float yPrecheck = getCheckPointPositionY(nextCheckpoint);
+        float xProCheck = getCheckPointPositionX(nextProCheckpoint);
+        float yProCheck = getCheckPointPositionY(nextProCheckpoint);
 
         //Distances
 
-        float dist = calcdist(xcheck,xship,ycheck,yship);
+        float dist = calcdist(xCheck, xShip, yCheck, yShip);
 
-        float diffdist = calcdiffdist(xcheck,xprecheck,ycheck,yprecheck);
+        float diffdist = calcdiffdist(xCheck, xPrecheck, yCheck, yPrecheck);
 
         //Orientation prochaine balise
 
-        double angleobj = (atan2(ycheck-yship,xcheck-xship))*180/PI;
+        double angleobj = (atan2(yCheck-yShip,xCheck-xShip))*180/PI;
         float diffangle = (float)angleobj-getShipAngle();
 
-        rotation=diffangle;
+        rotation = diffangle;
 
-        float dist2 = dist*0.5f*getShipSpeed();
+        float dist2 = dist * 0.5f * getShipSpeed();
 
         //Anticipation de la balise encore après
 
-        double angleobjpro = (atan2(yprocheck-yship,xprocheck-xship))*180/PI;
+        double angleobjpro = (atan2(yProCheck-yShip,xProCheck-xShip))*180/PI;
         float diffproangle = (float)angleobjpro-getShipAngle();
 
         //Accéleration
 
         if (dist<=3 && getShipSpeed()>= 1f){
             incSpeed(-0.8f);
-            rotation=diffproangle;
-        }
-        else{
+            rotation = diffproangle;
+        } else {
             incSpeed(1.0f);
-            rotation=diffangle;
+            rotation = diffangle;
         }
 
         turn(rotation);
