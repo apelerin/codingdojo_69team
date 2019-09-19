@@ -35,8 +35,7 @@ public class Student69 extends PodPlugIn {
         return diffdist;
     }
 
-
-    int nextproCheckpoint;
+    int nextCheckpoint;
 
     // END OF VARIABLES/FUNCTIONS AREA
     //-------------------------------------------------------
@@ -63,7 +62,7 @@ public class Student69 extends PodPlugIn {
         float xcheck = getCheckPointPositionX(procheck);
         float ycheck = getCheckPointPositionY(procheck);
 
-        int nextCheckpoint=nbcheck%getNbCompletedLaps();
+        int nextproCheckpoint=(procheck+1)%nbcheck;
 
         float xprecheck = getCheckPointPositionX(nextCheckpoint);
         float yprecheck = getCheckPointPositionY(nextCheckpoint);
@@ -92,8 +91,8 @@ public class Student69 extends PodPlugIn {
 
         //Accéleration
 
-        if (dist<=2.5 && getShipSpeed()>= 1.5f){
-            incSpeed(-0.75f);
+        if (dist<=3 && getShipSpeed()>= 1f){
+            incSpeed(-0.8f);
             rotation=diffproangle;
         }
         else{
@@ -102,8 +101,6 @@ public class Student69 extends PodPlugIn {
         }
 
         turn(rotation);
-
-        System.out.println (nbcheck%getNbCompletedLaps());
 
         // END OF CODE AREA
         //-------------------------------------------------------

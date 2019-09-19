@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <project name="maven-antrun-" default="main"  >
 <target name="main">
-  <copy todir="/Users/axelp/Documents/Romuald78-cd2k19_studentplugin-67989c515d15/resources/students">
+  <copy todir="/Users/monneriehugo/codingdojo_69team/resources/students">
     <fileset dir="target">
       <include name="**/Student69*.jar"/>
     </fileset>
