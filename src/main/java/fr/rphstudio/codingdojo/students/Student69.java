@@ -72,6 +72,8 @@ public class Student69 extends PodPlugIn {
         }
         return compt;
     }
+
+    int comptsecours;
     
     // END OF VARIABLES/FUNCTIONS AREA
     //-------------------------------------------------------
@@ -81,7 +83,7 @@ public class Student69 extends PodPlugIn {
         //-------------------------------------------------------
         // WRITE YOUR OWN CODE HERE
 
-        setPlayerName("69Student");
+        setPlayerName("69-Banana");
         selectShip(32);
         //arcenciel(comptcolo);
         //setPlayerColor(140, 0, 128, 255);
@@ -91,7 +93,12 @@ public class Student69 extends PodPlugIn {
         int ciblecheck = procheck;
         float dist = calcdist(procheck);
 
-        if (dist <=2){
+        //System.out.println ("anglevaisseau69the best --------------------"+calcangle(0));
+
+        if ((getShipBoostLevel()==100) & (calcangle(0)<=5) & (getNbMaxLaps()==2) & (procheck == (getNbRaceCheckPoints()-1)) ){
+            useBoost();}
+
+        if (dist <=3){
             if (procheck == (getNbRaceCheckPoints()-1)) {
                 ciblecheck = 0; }
             else {
@@ -106,19 +113,27 @@ public class Student69 extends PodPlugIn {
         else {
             turn (calcangle(ciblecheck));
         }
-
-        if (dist <= 3) {
+        if (comptsecours <=50){
+            incSpeed(1);
+        }
+        else if  (calcdist(procheck) <= 3) {
             if (getShipSpeed() < 1.5f){
                 incSpeed(0.7f * getShipSpeed());}
+            else if (getShipSpeed()>=3){
+                    incSpeed(-1f * getShipSpeed());
+            }
             else {
-                    incSpeed(-0.9f * getShipSpeed());
-            }}
-        else if (dist >=8 & (getShipBoostLevel() == 100) & (diffangle == 0)) {
+                //incSpeed(0.5f*getShipSpeed());
+            }
+                        }
+        else if (dist >=7 & (getShipBoostLevel() == 100) & (diffangle == 0)) {
             useBoost();
         }
         else{
             incSpeed(1f);
         }
+
+        comptsecours = comptsecours+1;
 
             // END OF CODE AREA
             //-------------------------------------------------------
