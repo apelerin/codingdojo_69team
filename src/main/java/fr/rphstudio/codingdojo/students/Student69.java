@@ -34,7 +34,7 @@ public class Student69 extends PodPlugIn {
     }
 
     boolean batteryIsLow() {
-        return getShipBatteryLevel() < 5f;
+        return getShipBatteryLevel() < 50f;
     }
     boolean nextCheckpointIsCharger() {
         return isCheckPointCharging(getNextCheckPointIndex());
@@ -53,9 +53,9 @@ public class Student69 extends PodPlugIn {
         distIndex[0] = 99;
         distIndex[1] = 100000f;
         for(int i = 0; i < getNbRaceCheckPoints(); i++) {
-            if (calcdist(getCheckPointPositionX(i), getShipPositionX(), getShipPositionY(i), getShipPositionY()) < distIndex[1]) {
-                distIndex[1] = i;
-                distIndex[2] = calcdist(getCheckPointPositionX(i), getShipPositionX(), getShipPositionY(i), getShipPositionY());
+            if (calcdist(getCheckPointPositionX(i), getShipPositionX(), getShipPositionY(i), getShipPositionY()) < distIndex[1] && isCheckPointCharging(i)) {
+                distIndex[0] = i;
+                distIndex[1] = calcdist(getCheckPointPositionX(i), getShipPositionX(), getShipPositionY(i), getShipPositionY());
             }
         }
         return distIndex;
@@ -74,13 +74,63 @@ public class Student69 extends PodPlugIn {
         float rotation;
         if (batteryIsLow() || currentlyCharging) { // if battery is critically low
             int indexClosest = (int)searchClosestChargingPoint()[0];
-            if (getShipBatteryLevel() < 99f) {
+            if (getShipBatteryLevel() < 75f) {
                 currentlyCharging = true;
             } else {
                 currentlyCharging = false;
             }
 
-            // Make the movement
+            // [
+            int nbCheck = getNbRaceCheckPoints();
+            int proCheck = indexClosest;
+
+            //Variables de positions
+
+            float xShip = getShipPositionX();
+            float yShip = getShipPositionY();
+            float xCheck = getCheckPointPositionX(proCheck);
+            float yCheck = getCheckPointPositionY(proCheck);
+
+            int nextProCheckpoint = (proCheck + 1) % nbCheck;
+
+            float xPrecheck = getCheckPointPositionX(nextCheckpoint);
+            float yPrecheck = getCheckPointPositionY(nextCheckpoint);
+            float xProCheck = getCheckPointPositionX(nextProCheckpoint);
+            float yProCheck = getCheckPointPositionY(nextProCheckpoint);
+
+            // Distances
+
+            float dist = calcdist(xCheck, xShip, yCheck, yShip);
+
+            float diffdist = calcdiffdist(xCheck, xPrecheck, yCheck, yPrecheck);
+
+            // Orientation toward next checkpoint
+
+            double angleobj = (atan2(yCheck - yShip, xCheck - xShip)) * 180 / PI;
+            float diffangle = (float) angleobj - getShipAngle();
+
+            float dist2 = dist * 0.5f * getShipSpeed();
+
+            // Anticipation de la balise encore après
+
+            double angleobjpro = (atan2(yProCheck - yShip, xProCheck - xShip)) * 180 / PI;
+            float diffproangle = (float) angleobjpro - getShipAngle();
+
+            // Accéleration
+
+            if (dist <= 5 && dist >= 1) {
+                incSpeed(-0.5f);
+                turn(diffangle);
+            } else if (dist < 1){
+                incSpeed(0.1f);
+            }
+            else {
+                incSpeed(1.0f);
+                turn(diffangle);
+            }
+            //turn(rotation);
+
+            // ]
 
         }// else if (batteryIsModerate() || currentlyCharging) { // if battery is moderately charged
                  //Need to check if next checkpoint is a charging point AND if we are on it
