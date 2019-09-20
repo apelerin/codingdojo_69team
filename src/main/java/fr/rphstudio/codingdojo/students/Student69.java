@@ -115,7 +115,7 @@ public class Student69 extends PodPlugIn {
         }
 
         // mise a jour du nouvelle objectif
-        
+
         diffangle=(diffangle+diffcompensation+360)%360;
 
         if (diffangle<180){
