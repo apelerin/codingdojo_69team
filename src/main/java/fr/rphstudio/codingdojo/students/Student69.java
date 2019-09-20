@@ -34,21 +34,32 @@ public class Student69 extends PodPlugIn {
     }
 
     boolean batteryIsLow() {
-        return getShipBatteryLevel() > 5f;
+        return getShipBatteryLevel() < 5f;
     }
-
-    boolean checkpointIsCharger() {
-        return true;
+    boolean nextCheckpointIsCharger() {
+        return isCheckPointCharging(getNextCheckPointIndex());
     }
-
     boolean batteryIsModerate() {
-        return getShipBatteryLevel() > 25f;
+        return getShipBatteryLevel() < 25f;
     }
-
     boolean currentlyCharging = false;
+    boolean isOnCheckPoint = false;
+
 
     int nextCheckpoint;
 
+    float[] searchClosestChargingPoint() {
+        float[] distIndex = new float[2];
+        distIndex[0] = 99;
+        distIndex[1] = 100000f;
+        for(int i = 0; i < getNbRaceCheckPoints(); i++) {
+            if (calcdist(getCheckPointPositionX(i), getShipPositionX(), getShipPositionY(i), getShipPositionY()) < distIndex[1]) {
+                distIndex[1] = i;
+                distIndex[2] = calcdist(getCheckPointPositionX(i), getShipPositionX(), getShipPositionY(i), getShipPositionY());
+            }
+        }
+        return distIndex;
+    }
     // END OF VARIABLES/FUNCTIONS AREA
     //-------------------------------------------------------
 
@@ -61,15 +72,8 @@ public class Student69 extends PodPlugIn {
         setPlayerColor(255, 0, 255, 130);
 
         float rotation;
-        if (!batteryIsLow() || currentlyCharging) { // if battery is critically low
-            int closestCheckIndex = 99;
-            float distClosest = 10000;
-            for(int i = 0; i < getNbRaceCheckPoints(); i++) {
-                if (calcdist(getCheckPointPositionX(i), getShipPositionX(), getShipPositionY(i), getShipPositionY()) < distClosest) {
-                    closestCheckIndex = i;
-                    distClosest = calcdist(getCheckPointPositionX(i), getShipPositionX(), getShipPositionY(i), getShipPositionY());
-                }
-            }
+        if (batteryIsLow() || currentlyCharging) { // if battery is critically low
+            int indexClosest = (int)searchClosestChargingPoint()[0];
             if (getShipBatteryLevel() < 99f) {
                 currentlyCharging = true;
             } else {
@@ -77,10 +81,33 @@ public class Student69 extends PodPlugIn {
             }
 
             // Make the movement
-        } else if { // if battery is moderately charged
-            //Need to check if next checkpoint is a charging point AND if we are on it
 
-        } else { // then if battery is charged enough
+        }// else if (batteryIsModerate() || currentlyCharging) { // if battery is moderately charged
+                 //Need to check if next checkpoint is a charging point AND if we are on it
+          //  if (!isOnCheckPoint) { // If ship isn't on a checkpoint
+          //     if (nextCheckpointIsCharger()){ // need to check if next checkpoint is charger
+          //          // if it is, make the move
+          //          int indexClosest = (int)searchClosestChargingPoint()[0];
+          //          float distClosest = searchClosestChargingPoint()
+          //          }
+          //          if (distClosest <  50) { // THEN stop
+          //              currentlyCharging = true;
+          //              isOnCheckPoint = true;
+          //          }
+          //      } else { // if next checkpoint isn't a charger, continue the race
+                    //classic moves
+          //      }
+          //  }
+         //   else { //if we are on a charger
+         //       // stay there you fool
+         //       if (getShipBatteryLevel() > 99f) {
+         //           currentlyCharging = false;
+         //           isOnCheckPoint = false;
+         //       }
+         //   }
+
+        //}
+        else { // then if battery is charged enough do your stuff
             //Variables de checkpoints
 
             int nbCheck = getNbRaceCheckPoints();
