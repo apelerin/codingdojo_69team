@@ -20,7 +20,7 @@ public class Student69 extends PodPlugIn {
     //-------------------------------------------------------
     // DECLARE YOUR OWN VARIABLES AND FUNCTIONS HERE
 
-    float calcdist(int numcheck) {
+    float calcdistshch (int numcheck) {
 
         float xcheck = getCheckPointPositionX(numcheck);
         float ycheck = getCheckPointPositionY(numcheck);
@@ -32,6 +32,18 @@ public class Student69 extends PodPlugIn {
         float dist = sqrt((distx * distx) + (disty * disty));
         return dist;
     }
+    float calcdistchch (int numcheckavant, int numcheckapres) {
+        float xcheckav = getCheckPointPositionX(numcheckavant);
+        float ycheckav = getCheckPointPositionY(numcheckavant);
+        float xcheckap = getCheckPointPositionX(numcheckapres);
+        float ycheckap = getCheckPointPositionY(numcheckapres);
+
+        float distx = xcheckap - xcheckav;
+        float disty = ycheckap - ycheckav;
+        float dist = sqrt((distx * distx) + (disty * disty));
+        return dist;
+    }
+
 
     float calcangle(int numcheck) {
         float xcheck = getCheckPointPositionX(numcheck);
@@ -43,37 +55,9 @@ public class Student69 extends PodPlugIn {
         return diffangle;
     }
 
-    int comptcolo = 0;
-
-    int arcenciel ( int compt) {
-        if (comptcolo >1200){
-            comptcolo=0;
-        }
-        else {
-            comptcolo = comptcolo+1;}
-
-        if (comptcolo<=200) {
-            setPlayerColor(140, 0, 128, 255);
-        }
-        else if (comptcolo<=400) {
-            setPlayerColor(0, 0, 135, 255);
-        }
-        else if (comptcolo<=600) {
-            setPlayerColor(0, 172, 39, 255);
-        }
-        else if (comptcolo<=800) {
-            setPlayerColor(255, 217, 0, 255);
-        }
-        else if (comptcolo<=1000) {
-            setPlayerColor(255, 38, 0, 255);
-        }
-        else if (comptcolo<=12000) {
-            setPlayerColor(255, 0, 150, 255);
-        }
-        return compt;
-    }
-
     int comptsecours;
+
+    int boostfin=0;
     
     // END OF VARIABLES/FUNCTIONS AREA
     //-------------------------------------------------------
@@ -84,53 +68,78 @@ public class Student69 extends PodPlugIn {
         // WRITE YOUR OWN CODE HERE
 
         setPlayerName("69-Banana");
+
         selectShip(32);
-        //arcenciel(comptcolo);
-        //setPlayerColor(140, 0, 128, 255);
-        setPlayerColor(160, 0, (int)(getShipBatteryLevel()*2.55), 255);
+        //setPlayerColor(160, 0, (int)(getShipBatteryLevel()*2.55), 255);
 
         int procheck = getNextCheckPointIndex();
         int ciblecheck = procheck;
-        float dist = calcdist(procheck);
+        int proprocheck= procheck;
+        float dist = calcdistshch(procheck);
 
-        //System.out.println ("anglevaisseau69the best --------------------"+calcangle(0));
+        int avcheck=procheck;
 
-        if ((getShipBoostLevel()==100) & (calcangle(0)<=5) & (getNbMaxLaps()==2) & (procheck == (getNbRaceCheckPoints()-1)) ){
-            useBoost();}
+        if (procheck == 0) {
+            avcheck = getNbRaceCheckPoints()-1;}
+        else {
+            avcheck = procheck-1;}
 
-        if (dist <=3){
+        if ((calcdistshch(procheck) <= (calcdistchch(avcheck ,procheck ))/100*30)){
             if (procheck == (getNbRaceCheckPoints()-1)) {
                 ciblecheck = 0; }
             else {
                 ciblecheck = procheck+1;}
-            calcdist(ciblecheck);
+            calcdistshch(ciblecheck);
         }
+
+        if (procheck == (getNbRaceCheckPoints()-1)) {
+            proprocheck = 0; }
+        else {
+            proprocheck = procheck+1;}
 
         float diffangle = calcangle(ciblecheck);
 
-        if (getShipSpeed() < 2f){
+        if (getShipSpeed() < 2.75f){
             turn(calcangle(procheck));}
         else {
             turn (calcangle(ciblecheck));
         }
-        if (comptsecours <=50){
+
+        //setPlayerName(""+calcangle(0));
+
+        if ( (( -0.05f < calcangle(0) & calcangle(0) < 0.05f) & (getNbCompletedLaps()+1 == getNbMaxLaps()) & (getNextCheckPointIndex() == 0))){
+            setPlayerColor(255,255,255,255);
+            if (getShipBoostLevel()==100 & calcdistshch(procheck)>=8) {
+                useBoost();}
+            else {
+                incSpeed(1);}
+            }
+        else if (comptsecours <=50){
             incSpeed(1);
         }
-        else if  (calcdist(procheck) <= 3) {
-            if (getShipSpeed() < 1.5f){
-                incSpeed(0.7f * getShipSpeed());}
-            else if (getShipSpeed()>=3){
-                    incSpeed(-1f * getShipSpeed());
-            }
+        else if (( -0.05f < calcangle(procheck) & calcangle(procheck) < 0.05f) & ( -0.5f < calcangle(proprocheck) & calcangle(proprocheck) < 0.5f)){
+            setPlayerColor(200,200,200,150);
+            if (getShipBoostLevel()==100 & calcdistshch(proprocheck)>=8) {
+                useBoost();}
             else {
-                //incSpeed(0.5f*getShipSpeed());
+                incSpeed(1);}
             }
-                        }
-        else if (dist >=7 & (getShipBoostLevel() == 100) & (diffangle == 0)) {
+        else if  (calcdistshch(procheck) <= (calcdistchch(avcheck ,procheck ))/100*30) {
+            if (getShipSpeed() < 1.5f){
+                incSpeed(1f );
+                setPlayerColor(100,255,100,255);}
+            else if (getShipSpeed()>=3){
+                    incSpeed((float)(-1f * getShipSpeed()));
+                    setPlayerColor(255,100,100,255);
+            }
+                }
+        else if (calcdistshch(procheck) >= (calcdistchch(avcheck ,procheck ))/100*0 & (getShipBoostLevel() == 100) & ( -0.05f < calcangle(0) & calcangle(0) < 0.5f)) {
             useBoost();
+            setPlayerColor(200,200,200,200);
         }
         else{
             incSpeed(1f);
+            setPlayerColor(100,100,255,255);
         }
 
         comptsecours = comptsecours+1;
