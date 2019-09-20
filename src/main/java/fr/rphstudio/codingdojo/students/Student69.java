@@ -79,6 +79,7 @@ public class Student69 extends PodPlugIn {
 
         double angleobj = (atan2(yCheck-yShip,xCheck-xShip))*180/PI;
         float diffangle = (float)angleobj-getShipAngle();
+        diffangle=(diffangle+360)%360;
 
         float dist2 = dist * 0.05f * getShipSpeed();
 
@@ -86,6 +87,13 @@ public class Student69 extends PodPlugIn {
 
         double angleobjpro = (atan2(yProCheck-yShip,xProCheck-xShip))*180/PI;
         float diffproangle = (float)angleobjpro-getShipAngle();
+        diffproangle=(diffproangle+360)%360;
+        if (diffproangle<180){
+            diffproangle=5;
+        }
+        else{
+            diffproangle=-5;
+        }
 
         //Compensation
 
@@ -93,10 +101,33 @@ public class Student69 extends PodPlugIn {
         float yspeed = getShipSpeedY();
         float directionSpeed = atan2(yspeed,xspeed)*180/PI;
         float diff = (float)((angleobj-directionSpeed)+360)%360;
+        float diffcompensation;
+        float ecart= abs(diff-180)*getShipSpeed()/100;
+
+
+        if(diff<180){
+            setPlayerColor(255,255,0,255);
+            diffcompensation=ecart;
+        }
+        else {
+            setPlayerColor(255,0,0,255);
+            diffcompensation=-ecart;
+        }
+
+        // mise a jour du nouvelle objectif
+        
+        diffangle=(diffangle+diffcompensation+360)%360;
+
+        if (diffangle<180){
+            diffangle=5;
+        }
+        else {
+            diffangle=-5;
+        }
 
         //Accéleration et rotation
 
-        if (dist<=3 && getShipSpeed()>=2f){
+        if (dist<=2 && getShipSpeed()>=3f){
             incSpeed(-1.0f);
             rotation = diffproangle;
         }
@@ -104,12 +135,14 @@ public class Student69 extends PodPlugIn {
             incSpeed(1.0f);
             rotation=diffangle;
 
-            if (diff>180 && angleobj+2.5<diff && angleobj-2.5>diff){
+            /*
+            if (diff>180 && angleobj+10<diff || diff>180 && angleobj-10>diff){
                 rotation=-diff;
             }
-            else if (diff<180 && angleobj+2.5<diff && angleobj-2.5>diff){
+            else if (diff<180 && angleobj+10<diff || diff<180 && angleobj-10>diff){
                 rotation=diff;
             }
+             */
         }
 
         //Tourner
